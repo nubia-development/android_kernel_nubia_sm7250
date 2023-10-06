@@ -1,0 +1,31 @@
+/*
+ * nubia overwrite dts
+ */
+
+&lito_snd {
+	qcom,mi2s-audio-intf = <1>;
+	qcom,auxpcm-audio-intf = <1>;
+	qcom,tdm-audio-intf = <1>;
+	qcom,msm-mbhc-hphl-swh = <0>;
+	qcom,msm-mbhc-gnd-swh = <0>;
+    	qcom,msm-mbhc-usbc-audio-supported = <1>;
+    	qcom,mbhc-audio-jack-type = "4-pole-jack";
+	qcom,wsa-max-devs = <0>;
+};
+
+&qupv3_se0_i2c {
+    spkamp@3a {/* max98927 smartpa device*/
+        compatible = "maxim,max98927L";
+        status = "okay";
+        reg = <0x3a>;
+        mono_stereo_mode = <0>;
+        interleave_mode = <0>;
+        maxim,98927-reset-gpio = <&tlmm 64 0>;
+    };
+};
+
+&wcd938x_codec {
+	qcom,cdc-micbias1-mv = <2500>;
+	qcom,cdc-micbias2-mv = <2700>;
+	qcom,cdc-micbias3-mv = <2500>;
+};

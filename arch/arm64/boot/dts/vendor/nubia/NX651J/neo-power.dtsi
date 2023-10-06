@@ -1,0 +1,57 @@
+/*
+ * nubia overwrite dts
+ */
+
+&mtp_batterydata {
+	#include "nubia-fg-gen4-batterydata-5080mah.dtsi"
+};
+
+&spmi_bus {
+	qcom,pm7250b@2 {
+		neo,battery {
+			compatible = "nubia,neo-battery";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			//reg = <0x1000 0x700>;
+			neo,batt-capacity-uah = <5100000>;
+			neo,batt-cutoff-mv = <3450>;
+			neo,batt-soc-increase-per-sec = <10>;
+			neo,batt-soc-decrease-per-sec = <60>;
+		};
+	};
+};
+
+&pm7250b_charger {
+	qcom,battery-data = <&mtp_batterydata>;
+	qcom,auto-recharge-soc = <99>;
+	qcom,auto-recharge-vbat-mv = <4340>;
+	/delete-property/ qcom,step-charging-enable;
+	qcom,fcc-stepping-enable;
+	qcom,fcc-step-delay-ms = <100>;
+	qcom,fcc-step-size-ua = <100000>;
+	qcom,chg-term-src = <1>;
+	qcom,chg-term-current-ma = <(-600)>;
+	qcom,smb-internal-pull-kohm = <0>;
+	qcom,en-skin-therm-mitigation;
+	qcom,hvdcp3-standalone-config;
+	qcom,step-chg-base-soc;				//use nubia step soc and stop qcom sw step if specified
+	qcom,step-chg-base-soc-value = <70>;		//if soc higher than this value, then reduce the fcc
+	qcom,step-chg-base-soc-current = <3300000>;     //the reduce the fcc value, mA
+	qcom,jeita-warm-stop-chg-soc = <70>;            //if battery is warm, stop chg when soc is higher than this threshold
+	qcom,lcd-on-limit-enable;
+	qcom,lcd-on-limit-temp = <400>;
+	qcom,lcd-on-limit-fcc = <1200000>;
+};
+
+&pm7250b_qg {
+	qcom,battery-data = <&mtp_batterydata>;
+	qcom,qg-iterm-ma = <1500>;
+	qcom,tcss-enable;
+	qcom,fvss-enable;
+	qcom,fvss-vbatt-mv = <3300>;
+	qcom,bass-enable;
+	qcom,vbatt-cutoff-mv = <3300>;
+	qcom,s2-acc-interval-ms =<100>;
+	qcom,s3-entry-ibat-ua =<30000>; //18000
+	qcom,s3-exit-ibat-ua =<38000>;
+};
